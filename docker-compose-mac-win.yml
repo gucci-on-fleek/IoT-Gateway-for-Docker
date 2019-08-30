@@ -4,7 +4,7 @@ services:
     container_name: iot-gateway
     image: guccionfleek/iot-gateway
     volumes:
-      - .:/root/.mozilla-iot
+      - .:/home/gateway/.mozilla-iot
     ports:
       - "8080:8080"
       - "4443:4443"

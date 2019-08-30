@@ -34,7 +34,7 @@ This is the easiest possible way to run the [Mozilla IoT Gateway](https://iot.mo
 
 ## Advantages over the [official image](https://hub.docker.com/r/mozillaiot/gateway)
 ### Small
-This image uses only 313 MB of disk space. It uses Alpine Linux as the base, and it installs the absolute minimum number of packages. The image clears out all of its temporary files and dev dependencies after being build to reduce its size to the bare minimum. The official image uses 1.54 GB, so this image is 80% smaller.
+This image uses only 233 MB of disk space. It uses Alpine Linux as the base, and it installs the absolute minimum number of packages. The image clears out all of its temporary files and dev dependencies after being build to reduce its size to the bare minimum. The official image uses 1.54 GB, so this image is 80% smaller.
 
 ### Fast
 When ran, the gateway takes only 15 seconds from `docker run` invocation until the gateway's webserver is fully operational. The gateway is mainly fast because the Docker image comes with the gateway fully built and ready to run.

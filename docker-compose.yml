@@ -4,5 +4,5 @@ services:
     container_name: iot-gateway
     image: guccionfleek/iot-gateway
     volumes:
-      - .:/root/.mozilla-iot
+      - .:/home/gateway/.mozilla-iot
     network_mode: "host"
