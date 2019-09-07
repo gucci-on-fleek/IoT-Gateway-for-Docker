@@ -31,9 +31,8 @@ RUN apk add --no-cache \
     pip2 --no-cache-dir install git+https://github.com/mozilla-iot/gateway-addon-python#egg=gateway_addon && \
     pip3 --no-cache-dir install git+https://github.com/mozilla-iot/gateway-addon-python#egg=gateway_addon && \
     pip3 --no-cache-dir install git+https://github.com/mycroftai/adapt#egg=adapt-parser && \
-    useradd -create-home --user-group --shell /bin/sh --system gateway && \
-    mkdir -p /srv/gateway && \
-    cd /srv/gateway && \
+    useradd --create-home --user-group --shell /bin/sh --system gateway && \
+    cd /srv && \
     git clone --depth 1 --recursive https://github.com/mozilla-iot/intent-parser && \
     git clone --depth 1 --recursive https://github.com/mozilla-iot/gateway && \
     cd gateway && \
@@ -41,10 +40,11 @@ RUN apk add --no-cache \
     npm install && \
     ./node_modules/.bin/webpack --display errors-only && \
     echo "#!/bin/sh" > ./start.sh && \
-    echo "cd /srv/gateway/gateway" >> ./start.sh && \
+    echo "cd /srv/gateway" >> ./start.sh && \
     echo "npm run run-only" >> ./start.sh && \
     chmod a+x ./start.sh && \
-    mkdir ./.mozilla-iot && \
+    mkdir -p /home/gateway/.mozilla-iot && \
+    chown -R gateway:gateway /home/gateway/ && \
     apk del --purge python3-dev python2-dev build-base cmake libffi-dev libusb-dev git shadow && \
     npm prune --production && \
     npm cache clean --force && \
@@ -53,5 +53,6 @@ RUN apk add --no-cache \
 USER gateway:gateway
 EXPOSE 8080/tcp 4443/tcp
 VOLUME /home/gateway/.mozilla-iot
-ENTRYPOINT ["/sbin/tini", "/bin/sh"]
-CMD ["/srv/gateway/gateway/start.sh"]
+WORKDIR /srv/gateway
+ENTRYPOINT ["/sbin/tini"]
+CMD ["/bin/sh", "/srv/gateway/start.sh"]
