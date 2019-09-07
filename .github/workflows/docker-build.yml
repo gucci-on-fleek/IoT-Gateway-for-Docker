@@ -11,4 +11,4 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build the Docker image for testing
-      run: docker build . --file Dockerfile --tag iot-gateway
+      run: docker build . --file Dockerfile --tag test-gateway

@@ -1,21 +1,37 @@
 #!/usr/bin/env python3
-from subprocess import run, TimeoutExpired
+from time import sleep
+from subprocess import Popen, PIPE
 
 DOCKER_ARGS = ["--rm"]  # Remove the image once finished
-DOCKER_IMAGE = "iot-gateway"
+DOCKER_IMAGE = "test-gateway"
 
-try:
-    process = run(
-        ["docker", run, *DOCKER_ARGS, DOCKER_IMAGE],
-        capture_output=True,
-        text=True,
-        timeout=10,
+
+def print_status():
+    """Run BEFORE assertions for easier debugging"""
+    print(
+        f"Stdout: {stdout}\n",
+        f"Stderr: {stderr}\n",
+        f"Return Code:{process.returncode}\n",
     )
-except TimeoutExpired:
-    timeout = True
-else:
-    timeout = False
 
-assert not process.stderr, "Output to stderr (bad)"
-assert timeout == True, "Image exited for some (bad) reason"
-assert "HTTP server listening" in process.stdout, "HTTP Server didn't start"
+
+process = Popen(
+    ["docker", "run", *DOCKER_ARGS, DOCKER_IMAGE], stdout=PIPE, stderr=PIPE, text=True
+)
+
+sleep(10)  # Give the image a few seconds to run
+
+if process.poll() != None:  # Make sure that the image didn't die
+    stdout, stderr = process.communicate()
+    print_status()
+    raise AssertionError("Image died")
+
+process.terminate()  # It's alive, so let's kill it
+process.poll()
+stdout, stderr = process.communicate()
+
+print_status()
+
+assert not stderr, "Output to stderr"
+assert process.returncode <= 1, "Bad return code"
+assert "HTTP server listening" in stdout, "HTTP Server didn't start"
