@@ -9,14 +9,18 @@ DOCKER_IMAGE = "test-gateway"
 def print_status():
     """Run BEFORE assertions for easier debugging"""
     print(
-        f"Stdout: {stdout}\n",
-        f"Stderr: {stderr}\n",
-        f"Return Code:{process.returncode}\n",
+        f"Stdout: {stdout}",
+        f"Stderr: {stderr}",
+        f"Return Code:{process.returncode}",
+        sep="\n",
     )
 
 
 process = Popen(
-    ["docker", "run", *DOCKER_ARGS, DOCKER_IMAGE], stdout=PIPE, stderr=PIPE, universal_newlines=True
+    ["docker", "run", *DOCKER_ARGS, DOCKER_IMAGE],
+    stdout=PIPE,
+    stderr=PIPE,
+    universal_newlines=True,
 )
 
 sleep(10)  # Give the image a few seconds to run
@@ -33,5 +37,5 @@ stdout, stderr = process.communicate()
 print_status()
 
 assert not stderr, "Output to stderr"
-assert process.returncode <= 1, "Bad return code"
+assert process.returncode in [143, 1, 0], "Bad exit code"
 assert "HTTP server listening" in stdout, "HTTP Server didn't start"
