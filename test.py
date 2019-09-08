@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.7
 from time import sleep
 from subprocess import Popen, PIPE
 
