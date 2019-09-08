@@ -17,5 +17,8 @@ jobs:
     - name: Build and push the Docker image for all architectures
       run: ./build.sh
     - name: Update readme.md on Docker Hub
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }} 
       run: ./update-readme.sh
 
