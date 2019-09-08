@@ -3,21 +3,19 @@ name: Docker Image CI
 on: [push]
 
 jobs:
-
-  build:
- 
-    runs-on: ubuntu-latest
- 
+  build: 
+    runs-on: ubuntu-latest 
     steps:
-    - uses: actions/checkout@v1
+    - name: Checkout the repository
+      uses: actions/checkout@v1
     - name: Build the Docker image for testing
       run: docker build . --file Dockerfile --tag test-gateway
     - name: Test the Docker image
       run: ./test.py
-    - uses: actions/docker/login@master
-      env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }} 
+    - name: Login to Docker
+      run: echo ${{secrets.DOCKER_PASSWORD}} | docker login -u ${{secrets.DOCKER_USERNAME}} --password-stdin
     - name: Build and push the Docker image for all architectures
       run: ./build.sh
+    - name: Update readme.md on Docker Hub
+      run: ./update-readme.sh
 
