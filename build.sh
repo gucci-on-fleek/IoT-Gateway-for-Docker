@@ -1,6 +1,6 @@
 #!/bin/sh
 export DOCKER_CLI_EXPERIMENTAL=enabled
-mkdir -p ~/.docker
+mkdir -p ~/.docker/cli-plugins
 echo '{"experimental": "enabled"}' > ~/.docker/config.json
 
 wget "https://github.com/docker/buildx/releases/download/v0.3.0/buildx-v0.3.0.linux-amd64"
