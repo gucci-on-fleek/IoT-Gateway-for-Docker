@@ -1,5 +1,6 @@
 #!/bin/sh
 export DOCKER_CLI_EXPERIMENTAL=enabled
+mkdir -p ~/.docker
 echo '{"experimental": "enabled"}' > ~/.docker/config.json
 docker buildx create --use IoT-Gateway
 docker buildx inspect --bootstrap
