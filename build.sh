@@ -1,4 +1,5 @@
 #!/bin/sh
+
 DOCKER_CLI_EXPERIMENTAL=enabled
 docker buildx create --name IoT-Gateway
 docker buildx use IoT-Gateway
