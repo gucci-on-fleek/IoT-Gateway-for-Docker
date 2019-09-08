@@ -14,3 +14,10 @@ jobs:
       run: docker build . --file Dockerfile --tag test-gateway
     - name: Test the Docker image
       run: ./test.py
+    - uses: actions/docker/login@master
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }} 
+    - name: Build and push the Docker image for all architectures
+      run: ./build.sh
+
