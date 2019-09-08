@@ -7,8 +7,8 @@ wget "https://github.com/docker/buildx/releases/download/v0.3.0/buildx-v0.3.0.li
 chmod a+x buildx-v0.3.0.linux-amd64
 mv ./buildx-v0.3.0.linux-amd64 ~/.docker/cli-plugins/docker-buildx
 
-apt update
-apt install qemu
+sudo apt-get update
+sudo apt-get install qemu
 
 docker buildx create --use
 docker buildx inspect --bootstrap
