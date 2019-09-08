@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.7
+#!/usr/bin/env python3
 from time import sleep
 from subprocess import Popen, PIPE
 
@@ -16,7 +16,7 @@ def print_status():
 
 
 process = Popen(
-    ["docker", "run", *DOCKER_ARGS, DOCKER_IMAGE], stdout=PIPE, stderr=PIPE, text=True
+    ["docker", "run", *DOCKER_ARGS, DOCKER_IMAGE], stdout=PIPE, stderr=PIPE, universal_newlines=True
 )
 
 sleep(10)  # Give the image a few seconds to run
