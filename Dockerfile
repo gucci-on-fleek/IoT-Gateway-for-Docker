@@ -1,20 +1,20 @@
-FROM node:8-alpine
+FROM node:alpine
 
 RUN apk add --no-cache \
-        build-base \
-        git \
-        libcap \
-        libffi-dev \
-        libffi \
-        libusb-dev \
-        libusb \
-        python3 \
-        python3-dev \
-        python2 \
-        python2-dev \
-        cmake \
-        tini \
-        shadow && \
+    build-base \
+    git \
+    libcap \
+    libffi-dev \
+    libffi \
+    libusb-dev \
+    libusb \
+    python3 \
+    python3-dev \
+    python2 \
+    python2-dev \
+    cmake \
+    tini \
+    shadow && \
     cd ~ && \
     git clone --depth 1 --recursive https://github.com/nanomsg/nanomsg.git && \
     cd nanomsg && \
@@ -30,7 +30,7 @@ RUN apk add --no-cache \
     python3 -m ensurepip && \
     pip2 --no-cache-dir install git+https://github.com/mozilla-iot/gateway-addon-python#egg=gateway_addon && \
     pip3 --no-cache-dir install git+https://github.com/mozilla-iot/gateway-addon-python#egg=gateway_addon && \
-    pip3 --no-cache-dir install git+https://github.com/mycroftai/adapt#egg=adapt-parser && \
+    pip3 --no-cache-dir install adapt-parser && \
     useradd --create-home --user-group --shell /bin/sh --system gateway && \
     cd /srv && \
     git clone --depth 1 --recursive https://github.com/mozilla-iot/intent-parser && \
@@ -49,7 +49,7 @@ RUN apk add --no-cache \
     npm prune --production && \
     npm cache clean --force && \
     rm -rf /tmp/*
-    
+
 USER gateway:gateway
 EXPOSE 8080/tcp 4443/tcp
 VOLUME /home/gateway/.mozilla-iot

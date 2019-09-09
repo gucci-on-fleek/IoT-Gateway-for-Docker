@@ -11,4 +11,4 @@ sudo docker run --privileged linuxkit/binfmt:v0.7
 
 docker buildx create --use
 docker buildx inspect --bootstrap
-docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --pull -t guccionfleek/iot-gateway:$(date +%Y-%m-%d) --push .
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --pull -t guccionfleek/iot-gateway:$(date +%Y-%m-%d) -t guccionfleek/iot-gateway:latest --push .
