@@ -10,8 +10,6 @@ RUN apk add --no-cache \
     libusb \
     python3 \
     python3-dev \
-    python2 \
-    python2-dev \
     cmake \
     tini \
     shadow && \
@@ -26,9 +24,7 @@ RUN apk add --no-cache \
     cp libnanomsg.so* /lib && \
     rm -rf /root/nanomsg && \
     cd ~ && \
-    python2 -m ensurepip && \
     python3 -m ensurepip && \
-    pip2 --no-cache-dir install git+https://github.com/mozilla-iot/gateway-addon-python#egg=gateway_addon && \
     pip3 --no-cache-dir install git+https://github.com/mozilla-iot/gateway-addon-python#egg=gateway_addon && \
     pip3 --no-cache-dir install adapt-parser && \
     useradd --create-home --user-group --shell /bin/sh --system gateway && \
