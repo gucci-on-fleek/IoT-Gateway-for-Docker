@@ -7,7 +7,7 @@ wget "https://github.com/docker/buildx/releases/download/v0.3.1/buildx-v0.3.1.li
 chmod a+x buildx-v0.3.1.linux-amd64
 mv ./buildx-v0.3.1.linux-amd64 ~/.docker/cli-plugins/docker-buildx
 
-sudo docker run --privileged linuxkit/binfmt:v0.7
+sudo docker run --privileged docker/binfmt
 
 docker buildx create --use
 docker buildx inspect --bootstrap
