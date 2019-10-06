@@ -10,6 +10,7 @@ RUN apk add --no-cache \
     libusb \
     python3 \
     python3-dev \
+    python2 \
     cmake \
     tini \
     shadow && \
@@ -41,7 +42,8 @@ RUN apk add --no-cache \
     chmod a+x ./start.sh && \
     mkdir -p /home/gateway/.mozilla-iot && \
     chown -R gateway:gateway /home/gateway/ && \
-    apk del --purge python3-dev python2-dev build-base cmake libffi-dev libusb-dev git shadow && \
+    rm -rf /var/cache/apk/* && \
+    apk del --purge python3-dev python2 build-base cmake libffi-dev libusb-dev git shadow ; \
     npm prune --production && \
     npm cache clean --force && \
     rm -rf /tmp/*
