@@ -8,6 +8,7 @@ chmod a+x buildx-v0.3.1.linux-amd64
 mv ./buildx-v0.3.1.linux-amd64 ~/.docker/cli-plugins/docker-buildx
 
 mkdir ./binfmt/
+cd ./binfmt/
 wget https://raw.githubusercontent.com/docker/binfmt/master/binfmt/Dockerfile https://raw.githubusercontent.com/docker/binfmt/master/binfmt/main.go https://raw.githubusercontent.com/docker/binfmt/master/binfmt/etc/binfmt.d/00_linuxkit.conf
 sed -i 's|COPY etc/binfmt.d/00_linuxkit.conf|COPY 00_linuxkit.conf|' Dockerfile
 docker build --pull -t binfmt .
