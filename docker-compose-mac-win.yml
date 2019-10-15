@@ -1,8 +1,9 @@
-version: "3"
+version: "3.7"
 services:
   gateway:
     container_name: iot-gateway
     image: guccionfleek/iot-gateway
+    restart: unless-stopped
     volumes:
       - .:/home/gateway/.mozilla-iot
     ports:
