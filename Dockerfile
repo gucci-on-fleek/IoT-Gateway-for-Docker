@@ -1,5 +1,7 @@
 FROM node:12-alpine
 
+COPY safe-chown.c /root/safe-chown.c
+
 RUN apk add --no-cache --virtual build-deps \
     python3-dev \
     build-base \
@@ -26,10 +28,13 @@ RUN apk add --no-cache --virtual build-deps \
     cp libnanomsg.so* /lib && \
     rm -rf /root/nanomsg && \
     cd ~ && \
+    gcc -Wall safe-chown.c && \
+    mv a.out /bin/safe-chown && \ 
+    chmod u+s,a-w /bin/safe-chown && \
     python3 -m ensurepip && \
     pip3 --no-cache-dir install git+https://github.com/mozilla-iot/gateway-addon-python#egg=gateway_addon && \
     pip3 --no-cache-dir install adapt-parser && \
-    useradd --create-home --user-group --shell /bin/sh --system gateway && \
+    useradd --create-home --user-group --shell /bin/sh --system --uid 4545 gateway && \
     cd /srv && \
     git clone --depth 1 --recursive https://github.com/mozilla-iot/intent-parser && \
     git clone --depth 1 --recursive https://github.com/mozilla-iot/gateway && \
@@ -38,6 +43,7 @@ RUN apk add --no-cache --virtual build-deps \
     npm install && \
     ./node_modules/.bin/webpack --display errors-only && \
     echo "#!/bin/sh" > ./start.sh && \
+    echo "safe-chown" >> ./start.sh && \
     echo "cd /srv/gateway" >> ./start.sh && \
     echo "npm run run-only" >> ./start.sh && \
     chmod a+x ./start.sh && \
