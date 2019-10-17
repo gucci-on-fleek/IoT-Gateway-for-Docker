@@ -1,6 +1,6 @@
 FROM node:12-alpine
 
-COPY safe-chown.c /root/safe-chown.c
+COPY ./safe-chown.c /root/safe-chown.c
 
 RUN apk add --no-cache --virtual build-deps \
     python3-dev \
