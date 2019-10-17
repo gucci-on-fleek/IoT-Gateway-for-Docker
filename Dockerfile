@@ -1,19 +1,20 @@
 FROM node:12-alpine
 
-RUN apk add --no-cache \
+RUN apk add --no-cache --virtual build-deps \
+    python3-dev \
     build-base \
-    git \
-    libcap \
+    cmake \
     libffi-dev \
-    libffi \
     libusb-dev \
+    git \
+    shadow && \
+    apk add --no-cache \
+    libcap \
+    libffi \
     libusb \
     python3 \
-    python3-dev \
     python2 \
-    cmake \
-    tini \
-    shadow && \
+    tini && \
     cd ~ && \
     git clone --depth 1 --recursive https://github.com/nanomsg/nanomsg.git && \
     cd nanomsg && \
@@ -43,7 +44,7 @@ RUN apk add --no-cache \
     mkdir -p /home/gateway/.mozilla-iot && \
     chown -R gateway:gateway /home/gateway/ && \
     rm -rf /var/cache/apk/* && \
-    apk del --purge python3-dev build-base cmake libffi-dev libusb-dev git shadow ; \
+    apk del --purge build-deps ; \
     npm prune --production && \
     npm cache clean --force && \
     rm -rf /tmp/*
