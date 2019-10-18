@@ -2,7 +2,7 @@ FROM node:12-alpine
 
 COPY ./safe-chown.c /root/safe-chown.c
 
-RUN apk add --no-cache --virtual build-deps \
+RUN apk add --no-cache --virtual build-reqs \
     python3-dev \
     build-base \
     cmake \
@@ -16,6 +16,7 @@ RUN apk add --no-cache --virtual build-deps \
     libusb \
     python3 \
     python2 \
+    curl \
     tini && \
     cd ~ && \
     git clone --depth 1 --recursive https://github.com/nanomsg/nanomsg.git && \
@@ -41,7 +42,7 @@ RUN apk add --no-cache --virtual build-deps \
     cd gateway && \
     npm config set unsafe-perm true && \
     npm install && \
-    ./node_modules/.bin/webpack --display errors-only && \
+    ./node_modules/.bin/webpack --display none && \
     echo "#!/bin/sh" > ./start.sh && \
     echo "safe-chown" >> ./start.sh && \
     echo "cd /srv/gateway" >> ./start.sh && \
@@ -50,7 +51,7 @@ RUN apk add --no-cache --virtual build-deps \
     mkdir -p /home/gateway/.mozilla-iot && \
     chown -R gateway:gateway /home/gateway/ && \
     rm -rf /var/cache/apk/* && \
-    apk del --purge build-deps ; \
+    apk del --purge build-reqs ; \
     npm prune --production && \
     npm cache clean --force && \
     rm -rf /tmp/*

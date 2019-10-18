@@ -3,20 +3,24 @@
 This is the easiest possible way to run the [Mozilla IoT Gateway](https://iot.mozilla.org/gateway/) on any platform. 
 
 ## How to use
-### Linux (all architectures)
+### Linux (all architectures, all distros)
 1. Install Docker
     ```
-    curl -fsSL https://get.docker.com -o get-docker.sh | sudo sh
+    curl -fsSL https://get.docker.com | sudo sh
     ```
-2. Download the Docker Compose file to the folder where you want to store the server's data
+2. Install Docker Compose
+    ```
+    sudo curl -L "https://github.com/docker/compose/releases/download/latest/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose; sudo chmod +x /usr/local/bin/docker-compose
+    ```
+3. Download the Docker Compose file to the folder where you want to store the server's data
     ```
     curl -fsSL https://github.com/gucci-on-fleek/IoT-Gateway-for-Docker/raw/master/docker-compose.yml -o docker-compose.yml
     ```
-3. Start the container in the same folder as `docker-compose.yml`  
+4. Start the container in the same folder as `docker-compose.yml`  
     ```
     docker-compose up -d
     ```
-4. You're done!
+That's it!
 
 ### Windows and macOS
 1. Install Docker  
@@ -30,7 +34,7 @@ This is the easiest possible way to run the [Mozilla IoT Gateway](https://iot.mo
     ```
     docker-compose up -d
     ```
-4. You're done!
+That's it!
 
 ## Advantages over the [official image](https://hub.docker.com/r/mozillaiot/gateway)
 ### Small
