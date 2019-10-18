@@ -62,4 +62,5 @@ VOLUME /home/gateway/.mozilla-iot
 WORKDIR /srv/gateway
 ENTRYPOINT ["/sbin/tini"]
 CMD ["/bin/sh", "/srv/gateway/start.sh"]
-HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 CMD \ curl -LkfsS https://localhost:4443 >/dev/null || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 CMD \
+    curl -LkfsS https://localhost:4443 >/dev/null || exit 1
