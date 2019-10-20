@@ -3,7 +3,25 @@
 This is the easiest possible way to run the [Mozilla IoT Gateway](https://iot.mozilla.org/gateway/) on any platform. 
 
 ## How to use
-### Linux (all architectures, all distros)
+### Ubuntu/Debian (x86_64, armv7, arm64)
+1. Install the required packages
+    ```
+    sudo apt install --no-install-recommends docker.io docker-compose curl
+    ```
+2. Create a data directory
+    ```
+    sudo mkdir -p /srv/iot-gateway && cd /srv/iot-gateway
+    ```
+3. Download the required files
+    ```
+    sudo curl -fsSL https://github.com/gucci-on-fleek/IoT-Gateway-for-Docker/raw/master/docker-compose.yml -o docker-compose.yml && sudo docker-compose pull
+    ```
+4. Run the container
+    ```
+    sudo docker-compose up -d
+    ```
+
+### Linux (all distros, all architectures)
 1. Install Docker
     ```
     curl -fsSL https://get.docker.com | sudo sh
@@ -20,7 +38,6 @@ This is the easiest possible way to run the [Mozilla IoT Gateway](https://iot.mo
     ```
     docker-compose up -d
     ```
-That's it!
 
 ### Windows and macOS
 1. Install Docker  
@@ -34,7 +51,6 @@ That's it!
     ```
     docker-compose up -d
     ```
-That's it!
 
 ## Advantages over the [official image](https://hub.docker.com/r/mozillaiot/gateway)
 ### Small
