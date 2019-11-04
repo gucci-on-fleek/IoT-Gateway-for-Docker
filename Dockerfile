@@ -30,7 +30,7 @@ RUN apk add --no-cache --virtual build-reqs \
     rm -rf /root/nanomsg && \
     cd ~ && \
     gcc -Wall safe-chown.c && \
-    mv a.out /bin/safe-chown && \ 
+    mv a.out /bin/safe-chown && \
     chmod u+s,a-w /bin/safe-chown && \
     python3 -m ensurepip && \
     pip3 --no-cache-dir install git+https://github.com/mozilla-iot/gateway-addon-python#egg=gateway_addon && \
@@ -42,7 +42,8 @@ RUN apk add --no-cache --virtual build-reqs \
     cd gateway && \
     npm config set unsafe-perm true && \
     npm install && \
-    ./node_modules/.bin/webpack --display none && \
+    npm audit fix ; \
+    ./node_modules/.bin/webpack --display errors-only && \
     echo "#!/bin/sh" > ./start.sh && \
     echo "safe-chown" >> ./start.sh && \
     echo "cd /srv/gateway" >> ./start.sh && \
@@ -62,5 +63,4 @@ VOLUME /home/gateway/.mozilla-iot
 WORKDIR /srv/gateway
 ENTRYPOINT ["/sbin/tini"]
 CMD ["/bin/sh", "/srv/gateway/start.sh"]
-HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 CMD \
-    curl -LkfsS https://localhost:4443 >/dev/null || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 CMD curl -LkfsS https://localhost:4443 >/dev/null || exit 1

@@ -1,6 +1,5 @@
 # IoT Gateway (for Docker)
-## What is this?
-This is the easiest possible way to run the [Mozilla IoT Gateway](https://iot.mozilla.org/gateway/) on any platform. 
+The easiest possible way to run the [Mozilla IoT Gateway](https://iot.mozilla.org/gateway/) on any platform. 
 
 ## How to use
 ### Ubuntu/Debian (x86_64, armv7, arm64)
