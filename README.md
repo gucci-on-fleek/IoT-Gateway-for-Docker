@@ -1,5 +1,5 @@
-# IoT Gateway (for Docker)
-The easiest possible way to run the [Mozilla IoT Gateway](https://iot.mozilla.org/gateway/) on any platform. 
+# WebThings Gateway (for Docker)
+The easiest possible way to run the [Mozilla WebThings Gateway](https://iot.mozilla.org/gateway/) on any platform. 
 
 ## How to use
 ### Ubuntu/Debian (x86_64, armv7, arm64)
