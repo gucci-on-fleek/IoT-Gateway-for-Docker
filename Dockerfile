@@ -53,6 +53,7 @@ RUN apk add --no-cache --virtual build-reqs \
     chown -R gateway:gateway /home/gateway/ && \
     rm -rf /var/cache/apk/* && \
     apk del --purge build-reqs ; \
+    npm dedupe && \
     npm prune --production && \
     npm cache clean --force && \
     rm -rf /tmp/*
