@@ -43,17 +43,17 @@ RUN apk add --no-cache --virtual build-reqs \
     cd /srv && \
     git clone --depth 1 --recursive https://github.com/mozilla-iot/intent-parser && \
     git clone --depth 1 --recursive https://github.com/mozilla-iot/gateway && \
+    echo "#!/bin/sh" > /srv/gateway/start.sh && \
+    echo "safe-chown" >> /srv/gateway/start.sh && \
+    echo "cd /srv/gateway" >> /srv/gateway/start.sh && \
+    echo "npm run run-only" >> /srv/gateway/start.sh && \
+    chmod a+x /srv/gateway/start.sh && \
     cd gateway && \
     npm config set unsafe-perm true && \
     npm install imagemin-webpack-plugin && \
     npm install && \
     npm audit fix ; \
     ./node_modules/.bin/webpack --display errors-only && \
-    echo "#!/bin/sh" > /srv/gateway/start.sh && \
-    echo "safe-chown" >> /srv/gateway/start.sh && \
-    echo "cd /srv/gateway" >> /srv/gateway/start.sh && \
-    echo "npm run run-only" >> /srv/gateway/start.sh && \
-    chmod a+x /srv/gateway/start.sh && \
     mkdir -p /home/gateway/.mozilla-iot && \
     chown -R gateway:gateway /home/gateway/ && \
     rm -rf /var/cache/apk/* && \
