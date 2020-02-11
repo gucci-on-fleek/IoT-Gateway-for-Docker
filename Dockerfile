@@ -17,7 +17,6 @@ RUN apk add --no-cache --virtual build-reqs \
     libcap \
     libffi \
     python3 \
-    python2 \
     curl \
     tini \
     zlib \
@@ -38,13 +37,16 @@ RUN apk add --no-cache --virtual build-reqs \
     chmod u+s,a-w /bin/safe-chown && \
     python3 -m ensurepip && \
     pip3 --no-cache-dir install git+https://github.com/mozilla-iot/gateway-addon-python#egg=gateway_addon && \
-    pip3 --no-cache-dir install adapt-parser && \
     useradd --create-home --user-group --shell /bin/sh --system --uid 4545 gateway && \
     cd /srv && \
-    git clone --depth 1 --recursive https://github.com/mozilla-iot/intent-parser && \
     git clone --depth 1 --recursive https://github.com/mozilla-iot/gateway && \
-    chmod a+x /srv/gateway/start.sh && \
+    git clone --depth 1 --recursive https://github.com/pagekite/PyPagekite && \
+    git clone --depth 1 --recursive https://github.com/pagekite/PySocksipyChain && \
+    cp -R ~/PyPagekite/pagekite /usr/lib/python3*/site-packages/ && \
+    cp -R ~/PySocksipyChain/sockschain /usr/lib/python3*/site-packages/ && \
     cd gateway && \
+    rm pagekite.py && \
+    ln -s /usr/lib/python3*/site-packages/pagekite/__main__.py /srv/gateway/pagekite.py && \
     npm config set unsafe-perm true && \
     npm install imagemin-webpack-plugin && \
     npm install && \
