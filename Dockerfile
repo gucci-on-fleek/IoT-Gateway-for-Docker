@@ -6,6 +6,7 @@ RUN apk add --no-cache --virtual build-reqs \
     python3-dev \
     build-base \
     python2 \
+    cmake \
     libffi-dev \
     git \
     shadow \
