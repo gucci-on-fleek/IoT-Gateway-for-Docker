@@ -8,7 +8,7 @@ RUN apk add --no-cache --virtual build-reqs \
     cmake \
     libffi-dev \
     git \
-    shadow \ 
+    shadow \
     autoconf \
     automake \
     nasm \
@@ -23,16 +23,6 @@ RUN apk add --no-cache --virtual build-reqs \
     optipng \
     libpng && \
     cd ~ && \
-    git clone --depth 1 --recursive https://github.com/nanomsg/nanomsg.git && \
-    cd nanomsg && \
-    mkdir build && \
-    cd build && \
-    cmake .. && \
-    cmake --build . && \
-    cmake --build . --target install && \
-    cp libnanomsg.so* /lib && \
-    rm -rf /root/nanomsg && \
-    cd ~ && \
     gcc -Wall safe-chown.c && \
     mv a.out /bin/safe-chown && \
     chmod u+s,a-w /bin/safe-chown && \
@@ -41,16 +31,18 @@ RUN apk add --no-cache --virtual build-reqs \
     cp -R ~/PyPagekite/pagekite /usr/lib/python3*/site-packages/ && \
     cp -R ~/PySocksipyChain/sockschain /usr/lib/python3*/site-packages/ && \
     python3 -m ensurepip && \
-    pip3 --no-cache-dir install git+https://github.com/mozilla-iot/gateway-addon-python#egg=gateway_addon && \
+    pip3 --no-cache-dir install git+https://github.com/mrstegeman/gateway-addon-python@remove-nanomsg#egg=gateway_addon && \
     useradd --create-home --user-group --shell /bin/sh --system --uid 4545 gateway && \
     cd /srv && \
-    git clone --depth 1 --recursive https://github.com/mozilla-iot/gateway && \
+    git clone --depth 1 --recursive --single-branch --branch remove-nanomsg https://github.com/mrstegeman/gateway.git && \
     cd gateway && \
+    sed -i 's/"segfault-handler":.*//' package.json && \
+    sed -i 's/.*SegfaultHandler.*//' src/app.js && \
     rm pagekite.py && \
     ln -s /usr/lib/python3*/site-packages/pagekite/__main__.py /srv/gateway/pagekite.py && \
     npm config set unsafe-perm true && \
     npm install imagemin-webpack-plugin && \
-    npm install && \
+    npm install ; \
     npm audit fix ; \
     ./node_modules/.bin/webpack --display errors-only && \
     mkdir -p /home/gateway/.mozilla-iot && \
