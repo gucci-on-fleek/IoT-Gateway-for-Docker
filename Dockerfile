@@ -51,9 +51,9 @@ RUN apk add --no-cache --virtual build-reqs \
     ln -s /usr/lib/python3*/site-packages/pagekite/__main__.py /srv/gateway/pagekite.py && \
     npm config set unsafe-perm true && \
     npm install imagemin-webpack-plugin && \
-    npm install ; \
+    npm install && \
     npm audit fix ; \
-    ./node_modules/.bin/webpack --display errors-only && \
+    ./node_modules/.bin/webpack --display errors-only ; \
     mkdir -p /home/gateway/.mozilla-iot && \
     chown -R gateway:gateway /home/gateway/ && \
     rm -rf /var/cache/apk/* && \
