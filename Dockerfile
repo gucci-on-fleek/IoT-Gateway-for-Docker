@@ -5,10 +5,10 @@ COPY ./safe-chown.c /root/safe-chown.c
 RUN apk add --no-cache --virtual build-reqs \
     python3-dev \
     build-base \
-    cmake \
+    python2 \
     libffi-dev \
     git \
-    shadow \ 
+    shadow \
     autoconf \
     automake \
     nasm \
