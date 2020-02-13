@@ -48,7 +48,6 @@ RUN apk add --no-cache --virtual build-reqs \
     mkdir -p /home/gateway/.mozilla-iot && \
     chown -R gateway:gateway /home/gateway/ && \
     rm -rf /var/cache/apk/* && \
-    rm -rf /srv/gateway/src && \
     find /srv/gateway/static -type f -not -name 'floorplan.svg' -delete && \
     find / -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete && \
     apk del --purge build-reqs ; \
