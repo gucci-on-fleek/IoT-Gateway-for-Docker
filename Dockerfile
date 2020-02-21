@@ -55,7 +55,7 @@ RUN apk add --no-cache --virtual build-reqs \
     rm -rf ./node_modules/mozjpeg && \
     npm prune --production && \
     npm cache clean --force && \
-    RM -rf /var/tmp/* && \
+    rm -rf /var/tmp/* && \
     rm -rf ~/* && \
     rm -rf /tmp/*
 
