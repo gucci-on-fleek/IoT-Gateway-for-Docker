@@ -31,10 +31,10 @@ RUN apk add --no-cache --virtual build-reqs \
     cp -R ~/PyPagekite/pagekite /usr/lib/python3*/site-packages/ && \
     cp -R ~/PySocksipyChain/sockschain /usr/lib/python3*/site-packages/ && \
     python3 -m ensurepip && \
-    pip3 --no-cache-dir install git+https://github.com/mrstegeman/gateway-addon-python@remove-nanomsg#egg=gateway_addon && \
+    pip3 --no-cache-dir install git+https://github.com/mozilla-iot/gateway-addon-python#egg=gateway_addon && \
     useradd --create-home --user-group --shell /bin/sh --system --uid 4545 gateway && \
     cd /srv && \
-    git clone --depth 1 --recursive --single-branch --branch remove-nanomsg https://github.com/mrstegeman/gateway.git && \
+    git clone --depth 1 --recursive https://github.com/mozilla-iot/gateway.git && \
     cd gateway && \
     sed -i 's/"segfault-handler":.*//' package.json && \
     sed -i 's/.*SegfaultHandler.*//' src/app.js && \
@@ -51,8 +51,11 @@ RUN apk add --no-cache --virtual build-reqs \
     find / -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete && \
     apk del --purge build-reqs ; \
     npm dedupe && \
+    rm -rf ./node_modules/gifsicle && \
+    rm -rf ./node_modules/mozjpeg && \
     npm prune --production && \
     npm cache clean --force && \
+    RM -rf /var/tmp/* && \
     rm -rf ~/* && \
     rm -rf /tmp/*
 
