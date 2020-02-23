@@ -14,7 +14,7 @@ RUN apk add --no-cache --virtual build-reqs \
     nasm \
     zlib-dev \
     libpng-dev \
-    libjpeg-dev \
+    libjpeg-turbo-dev \
     libtool && \
     apk add --no-cache \
     libcap \
@@ -23,7 +23,7 @@ RUN apk add --no-cache --virtual build-reqs \
     curl \
     tini \
     zlib \
-    libjpeg \
+    libjpeg-turbo \
     libpng && \
     cd ~ && \
     gcc -Wall safe-chown.c && \
