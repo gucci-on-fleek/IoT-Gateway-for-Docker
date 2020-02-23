@@ -12,7 +12,10 @@ RUN apk add --no-cache --virtual build-reqs \
     autoconf \
     automake \
     nasm \
-    zlib-dev && \
+    zlib-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libtool && \
     apk add --no-cache \
     libcap \
     libffi \
@@ -20,7 +23,7 @@ RUN apk add --no-cache --virtual build-reqs \
     curl \
     tini \
     zlib \
-    optipng \
+    libjpeg \
     libpng && \
     cd ~ && \
     gcc -Wall safe-chown.c && \
@@ -40,6 +43,7 @@ RUN apk add --no-cache --virtual build-reqs \
     sed -i 's/.*SegfaultHandler.*//' src/app.js && \
     rm pagekite.py && \
     ln -s /usr/lib/python3*/site-packages/pagekite/__main__.py /srv/gateway/pagekite.py && \
+    export CPPFLAGS="-DPNG_ARM_NEON_OPT=0" && \
     npm config set unsafe-perm true && \
     npm install imagemin-webpack-plugin && \
     npm install && \
@@ -51,13 +55,11 @@ RUN apk add --no-cache --virtual build-reqs \
     find / -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete && \
     apk del --purge build-reqs ; \
     npm dedupe && \
-    rm -rf ./node_modules/gifsicle && \
-    rm -rf ./node_modules/mozjpeg && \
+    rm -rf ./node_modules/gifsicle ./node_modules/mozjpeg ./node_modules/optipng-bin && \
+    ln -s /usr/bin/python3 /usr/bin/python && \
     npm prune --production && \
     npm cache clean --force && \
-    rm -rf /var/tmp/* && \
-    rm -rf ~/* && \
-    rm -rf /tmp/*
+    rm -rf /var/tmp/* ~/* /tmp/*
 
 COPY ./start.sh /srv/gateway/start.sh
 USER gateway:gateway
