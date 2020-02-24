@@ -84,15 +84,15 @@ cleanup_node () {
     rm -rf ./node_modules/gifsicle ./node_modules/mozjpeg ./node_modules/optipng-bin
     npm prune --production
     npm cache clean --force
-    ln -s /usr/bin/python3 /usr/bin/python
 }
 
 cleanup () {
     rm -rf /var/cache/apk/* && \
     find / -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete && \
     apk del --purge build-reqs || true
+    ln -s /usr/bin/python3 /usr/bin/python
     rm -rf /var/tmp/* ~/* /tmp/*
 }
 
-printf '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r~~~ Running %s \n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n' $1
+printf '   ╔═══════════════════════════════════╗\n   ║                                   ║\r   ║   Running %s \n   ╚═══════════════════════════════════╝\n' $1
 $1
