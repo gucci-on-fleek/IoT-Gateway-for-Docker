@@ -12,6 +12,7 @@ RUN \
     docker-build build_safe_chown ; \
     docker-build install_pagekite ; \
     docker-build prepare_gateway_build ; \
+    docker-build install_image_binaries ; \
     docker-build install_npm_packages ; \
     docker-build build_gateway ; \
     docker-build create_conf_dir ; \

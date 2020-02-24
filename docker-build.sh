@@ -11,7 +11,7 @@ set -e # Fail the entire build if any command fails
 cd ~
 
 install_packages () {
-    apk add --no-cache --virtual build-reqs \ # Build Dependencies
+    apk add --no-cache --virtual build-reqs \
         python3-dev \
         build-base \
         python2 \
@@ -24,16 +24,19 @@ install_packages () {
         zlib-dev \
         libpng-dev \
         libjpeg-turbo-dev \
-        libtool
-    apk add --no-cache \ # Packages required at runtime
+        libtool \
+        libjpeg-turbo-utils \
+        gifsicle \
+        optipng \
+        pngquant \
+        jq
+    apk add --no-cache \
         libcap \
         libffi \
         python3 \
         curl \
         tini \
-        zlib \
-        libjpeg-turbo \
-        libpng
+        zlib
     python3 -m ensurepip
     pip3 --no-cache-dir install git+https://github.com/mozilla-iot/gateway-addon-python#egg=gateway_addon # Python package to enable python addons
 }
@@ -62,16 +65,38 @@ prepare_gateway_build () {
     npm config set unsafe-perm true # Required for arm builds for some reason
 }
 
+get_version () { # Gets the version of a package from 'package-lock.json'
+    jq -r '..|objects|."'"$1"'"//empty' < package-lock.json | head -n -1 | jq -r '.version'
+}
+
+install_image_binaries () { # Install the image binaries using the versions from the package manager instead of building from source each time
+    cd /srv/gateway/
+    npm install -D --ignore-scripts \
+        gifsicle@$(get_version gifsicle) \
+        jpegtran-bin@$(get_version jpegtran-bin) \
+        mozjpeg@$(get_version mozjpeg) \
+        optipng-bin@$(get_version optipng-bin) \
+        pngquant-bin@$(get_version pngquant-bin) # Download, but do not install
+    mkdir -p ./node_modules/gifsicle/vendor/ ./node_modules/jpegtran-bin/vendor/ ./node_modules/mozjpeg/vendor/ ./node_modules/optipng-bin/vendor/ ./node_modules/pngquant-bin/vendor/
+    ln -s $(which gifsicle) ./node_modules/gifsicle/vendor/gifsicle # Add the version from the package manager to the node_modules directory
+    ln -s $(which jpegtran) ./node_modules/jpegtran-bin/vendor/jpegtran
+    ln -s $(which cjpeg) ./node_modules/mozjpeg/vendor/cjpeg
+    ln -s $(which optipng) ./node_modules/optipng-bin/vendor/optipng
+    ln -s $(which pngquant) ./node_modules/pngquant-bin/vendor/pngquant-bin
+    npm rebuild > /dev/null # Now we build the modules
+}
+
+
 install_npm_packages () {
     cd /srv/gateway/
-    npm install imagemin-webpack-plugin # Build fails unless installed first
+    npm install -D imagemin-webpack-plugin # Build fails unless installed first
     npm install
     npm audit fix || true # NPM packages tend to have security vulnerabilities, so lets fix them
 }
 
 build_gateway () {
     cd /srv/gateway/
-    ./node_modules/.bin/webpack --display errors-only || true
+    ./node_modules/.bin/webpack --display errors-only
 }
 
 create_conf_dir () {
@@ -82,8 +107,8 @@ create_conf_dir () {
 
 cleanup_node () {
     cd /srv/gateway/
+    rm -rf ./node_modules/gifsicle/./node_modules/jpegtran-bin/ ./node_modules/mozjpeg ./node_modules/optipng-bin ./node_modules/pngquant-bin/ # Fixes the arm builds
     npm dedupe # Sometimes this can reduce package sizes
-    rm -rf ./node_modules/gifsicle ./node_modules/mozjpeg ./node_modules/optipng-bin # Fixes the arm builds
     npm prune --production
     npm cache clean --force
 }
@@ -96,5 +121,5 @@ cleanup () {
     rm -rf /var/tmp/* ~/* /tmp/*
 }
 
-printf '   ╔═══════════════════════════════════╗\n   ║                                   ║\r   ║   Running %s \n   ╚═══════════════════════════════════╝\n' $1
+printf '   ╔═══════════════════════════════════╗\n   ║                                   ║\r   ║   Running %s \n   ╚═══════════════════════════════════╝\n' "$1"
 $1

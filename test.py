@@ -40,3 +40,5 @@ print_status()
 assert not stderr, "Output to stderr"
 assert process.returncode in [143, 1, 0], "Bad exit code"
 assert "HTTP server listening" in stdout, "HTTP Server didn't start"
+
+print("═══ Sucess! ═══")
