@@ -1,4 +1,15 @@
-#define _XOPEN_SOURCE 700
+/* safe-chown.c
+ * https://github.com/gucci-on-fleek/IoT-Gateway-for-Docker
+ * Allow non-root users to change the ownership of a directory
+ * specified at compile-time.
+ */
+
+#define UID 4545                              // UID to assign ownership to
+#define FILENAME "/home/gateway/.mozilla-iot" // Directory to change ownership recursively
+
+// All changes made below this point are AT YOUR OWN RISK!
+
+#define _XOPEN_SOURCE 700 // Needed for some of the FTW flags
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,11 +17,8 @@
 #include <ftw.h>
 #include <errno.h>
 
-#define UID 4545
-#define FILENAME "/home/gateway/.mozilla-iot"
-
 #ifndef USE_FDS
-#define USE_FDS 15
+#define USE_FDS 15 // The number of file descriptors to open at once
 #endif
 
 uid_t uid;
@@ -31,14 +39,14 @@ int main(int argc, char *argv[])
     int result;
     char *dirpath = FILENAME;
 
-    /* Invalid directory path? */
+    // Invalid directory path
     if (dirpath == NULL || *dirpath == '\0')
     {
         perror("chown");
         return errno = EINVAL;
     }
 
-    result = nftw(dirpath, change_ownership, USE_FDS, FTW_PHYS);
+    result = nftw(dirpath, change_ownership, USE_FDS, FTW_PHYS); // Filetree walk
     if (result >= 0)
         errno = result;
 

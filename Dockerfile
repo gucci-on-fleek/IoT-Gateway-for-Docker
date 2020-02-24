@@ -1,5 +1,8 @@
 FROM node:12-alpine
 
+LABEL url="https://github.com/gucci-on-fleek/IoT-Gateway-for-Docker"
+LABEL description="A Dockerfile for the Mozilla WebThings Gateway. See url."
+
 COPY ./safe-chown.c /root/safe-chown.c
 COPY ./docker-build.sh /bin/docker-build
 

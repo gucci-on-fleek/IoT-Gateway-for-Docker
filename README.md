@@ -1,5 +1,5 @@
 # WebThings Gateway (for Docker)
-The easiest possible way to run the [Mozilla WebThings Gateway](https://iot.mozilla.org/gateway/) on any platform. 
+*Small, fast, easy to use, and secure. Docker image to run the [Mozilla WebThings Gateway](https://iot.mozilla.org/gateway/) on all platforms.*
 
 ## How to use
 ### Ubuntu/Debian (x86_64, armv7, arm64)
@@ -71,17 +71,24 @@ Because the container is immutable, it cannot be updated from within the gateway
 
 ## Advantages over the [official image](https://hub.docker.com/r/mozillaiot/gateway)
 ### Small
-This image uses only 233 MB of disk space. It uses Alpine Linux as the base, and it installs the absolute minimum number of packages. The image clears out all of its temporary files and dev dependencies after being build to reduce its size to the bare minimum. The official image uses 1.54 GB, so this image is 80% smaller.
+This image uses only 179 MB of disk space. It uses Alpine Linux as the base, and it installs the absolute minimum number of packages. The image clears out all of its temporary files and dev dependencies after being build to reduce its size to the bare minimum. The official image uses 1.54 GB, so this image is 80% smaller.
 
 ### Fast
-When ran, the gateway takes only 15 seconds from `docker run` invocation until the gateway's webserver is fully operational. The gateway is mainly fast because the Docker image comes with the gateway fully built and ready to run.
+When ran, the gateway takes only 15 seconds from `docker run` invocation until the gateway's webserver is fully operational.
 
 ### Easy to use
-Images for amd64, armv7, and arm64 are prebuild and uploaded to the Docker Hub. A docker-compose file is provides so the image is easy to run.
+Images for amd64, armv7, and arm64 are prebuilt and uploaded to the Docker Hub. A `docker-compose` file is provides so the image is easy to run.
+
+### Secure
+The entire gateway runs from within a Docker container, so the kernel can enforce security boundaries to prevent any code — malicious or benign — from running outside of the gateway. In addition, all processes in the container run as an ordinary user (not root). Even if an attacker can run code as the gateway user, he cannot modify the container because all of its files are owned by root.
 
 ## Known Issues
 - There is no C/C++ compiler installed in the container, so some addons may fail to install. Currently, the only known instance of this issue is the [Date-time Adapter](https://github.com/tomasy/date-time-adapter) due to its reliance on [pyephem](https://pypi.org/project/pyephem/).
-- Some devices may not be discovered when running on macOS or Windows. Due to the way that these platforms run their networking, this is difficult to solve. You can try and add some additional ports to the `docker-compose.yml` to solve this issue if you know which port your device communicates with.
+- Some devices may not be discovered when running on macOS or Windows. Due to the way that these platforms run their networking, this is difficult to solve. You can try and add some additional ports to `docker-compose.yml` to if you know which port your device communicates with.
+- arm64 builds tend to be unstable. This is mainly due to poor upstream support by some of the npm modules. I'm running the arm64 build in production so most issues get fixed pretty quickly, but the x86_64 builds tend to be more stable. 
 
 ## Contributing
 Pull Requests are gladly accepted! I would greatly appreciate any changes that increase the speed, reduce the size, or improve the reliability of the image.
+
+## Licence
+All code in this repository is subject to the "Mozilla Public License Version 2.0". Of course, the Docker image contains many components, so this licence _only_ covers the contributions from this repository. In general though, you can use and modify the Docker image as you see fit, however distribution may carry some additional requirements. See [licence.txt](https://github.com/gucci-on-fleek/IoT-Gateway-for-Docker/blob/master/licence.txt) for more information.
