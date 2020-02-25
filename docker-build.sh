@@ -48,7 +48,7 @@ build_safe_chown () {
 }
 
 install_pagekite () {
-    git clone --depth 1 --recursive https://github.com/pagekite/PyPagekite # We need to install pagekite from master because none of the releases support python3
+    git clone --depth 1 --recursive https://github.com/gucci-on-fleek/PyPagekite # We need to install pagekite from master because none of the releases support python3
     git clone --depth 1 --recursive https://github.com/pagekite/PySocksipyChain 
     cp -R ~/PyPagekite/pagekite /usr/lib/python3*/site-packages/
     cp -R ~/PySocksipyChain/sockschain /usr/lib/python3*/site-packages/
@@ -116,6 +116,7 @@ cleanup_node () {
 cleanup () {
     rm -rf /var/cache/apk/* 
     find / -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete # The pycache files are quite large and can be rebuild when they are used
+    find / -type d -name '.git' -delete # .git directories are large and useless in production
     apk del --purge build-reqs || true
     ln -s /usr/bin/python3 /usr/bin/python
     rm -rf /var/tmp/* ~/* /tmp/*
