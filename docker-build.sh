@@ -48,7 +48,7 @@ build_safe_chown () {
 }
 
 install_pagekite () {
-    git clone --depth 1 --recursive https://github.com/gucci-on-fleek/PyPagekite # We need to install pagekite from master because none of the releases support python3
+    git clone --depth 1 --recursive --single-branch --branch more-python3 https://github.com/SunilMohanAdapa/PyPagekite.git # Python3 Pagekite is broken, so we use a branch until pagekite/PyPagekite#75 is merged
     git clone --depth 1 --recursive https://github.com/pagekite/PySocksipyChain 
     cp -R ~/PyPagekite/pagekite /usr/lib/python3*/site-packages/
     cp -R ~/PySocksipyChain/sockschain /usr/lib/python3*/site-packages/
@@ -63,6 +63,7 @@ prepare_gateway_build () {
     rm pagekite.py
     ln -s /usr/lib/python3*/site-packages/pagekite/__main__.py /srv/gateway/pagekite.py 
     npm config set unsafe-perm true # Required for arm builds for some reason
+    sed -i "s/'cflags': \[\]/'cflags': \['-w'\]/" /usr/local/include/node/config.gypi # Quiet the gcc warnings, there's nothing that we can do about them anyways
 }
 
 get_version () { # Gets the version of a package from 'package-lock.json'
@@ -115,8 +116,7 @@ cleanup_node () {
 
 cleanup () {
     rm -rf /var/cache/apk/* 
-    find / -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete # The pycache files are quite large and can be rebuild when they are used
-    find / -type d -name '.git' -delete # .git directories are large and useless in production
+    find / -path '*/.git*' -delete  -o -name '*.md' -delete -o -name '*.js.map' -delete -o -name '*.h' -delete -o -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete  # Delete large, useless files
     apk del --purge build-reqs || true
     ln -s /usr/bin/python3 /usr/bin/python
     rm -rf /var/tmp/* ~/* /tmp/*
