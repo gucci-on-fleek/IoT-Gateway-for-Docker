@@ -49,6 +49,7 @@ build_safe_chown () {
 
 install_pagekite () {
     git clone --depth 1 --recursive --single-branch --branch more-python3 https://github.com/SunilMohanAdapa/PyPagekite.git # Python3 Pagekite is broken, so we use a branch until pagekite/PyPagekite#75 is merged
+    sed -i 's/from cgi import escape/from html import escape/' ./PyPagekite/pagekite/httpd.py ./PyPagekite/pagekite/pk.py # From pagekite/PyPagekite#78
     git clone --depth 1 --recursive https://github.com/pagekite/PySocksipyChain 
     cp -R ~/PyPagekite/pagekite /usr/lib/python3*/site-packages/
     cp -R ~/PySocksipyChain/sockschain /usr/lib/python3*/site-packages/
@@ -63,7 +64,7 @@ prepare_gateway_build () {
     rm pagekite.py
     ln -s /usr/lib/python3*/site-packages/pagekite/__main__.py /srv/gateway/pagekite.py 
     npm config set unsafe-perm true # Required for arm builds for some reason
-    sed -i "s/'cflags': \[\]/'cflags': \['-w'\]/" /usr/local/include/node/config.gypi # Quiet the gcc warnings, there's nothing that we can do about them anyways
+    export CXXFLAGS='-w' # Quiet the gcc warnings, there's nothing that we can do about them anyways
 }
 
 get_version () { # Gets the version of a package from 'package-lock.json'
