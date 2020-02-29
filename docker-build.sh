@@ -48,8 +48,7 @@ build_safe_chown () {
 }
 
 install_pagekite () {
-    git clone --depth 1 --recursive --single-branch --branch more-python3 https://github.com/SunilMohanAdapa/PyPagekite.git # Python3 Pagekite is broken, so we use a branch until pagekite/PyPagekite#75 is merged
-    sed -i 's/from cgi import escape/from html import escape/' ./PyPagekite/pagekite/httpd.py ./PyPagekite/pagekite/pk.py # From pagekite/PyPagekite#78
+    git clone --depth 1 --recursive https://github.com/pagekite/PyPagekite.git
     git clone --depth 1 --recursive https://github.com/pagekite/PySocksipyChain 
     cp -R ~/PyPagekite/pagekite /usr/lib/python3*/site-packages/
     cp -R ~/PySocksipyChain/sockschain /usr/lib/python3*/site-packages/
@@ -114,14 +113,13 @@ cleanup_node () {
     npm cache clean --force
 }
 
-cleanup () {
-    rm -rf /var/cache/apk/* 
+cleanup () { 
     find / -path '*/.git*' -delete  -o -name '*.md' -delete -o -name '*.js.map' -delete -o -name '*.h' -delete -o -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete  # Delete large, useless files
     find /srv/ -type f -executable -o -name '*.so*' | xargs file | awk -F: '/ELF/ {print $1}' | xargs strip --strip-unneeded || true # Strip all binaries.
     apk -q del --purge build-reqs || true
     ln -s /usr/bin/python3 /usr/bin/python
-    rm -rf /var/tmp/* ~/* /tmp/*
+    rm -rf /var/tmp/* ~/* /tmp/* /var/cache/apk/*
 }
 
-printf '   ╔═══════════════════════════════════╗ (%s)\n   ║                                   ║\r   ║   Running %s \n   ╚═══════════════════════════════════╝\n' "$1" "$(uname -m)"
+printf '   (%s)\n   ╔═══════════════════════════════════╗\n   ║                                   ║\r   ║   Running %s \n   ╚═══════════════════════════════════╝\n' "$(uname -m)" "$1"
 $1
