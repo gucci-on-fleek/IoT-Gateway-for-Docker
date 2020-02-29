@@ -64,7 +64,7 @@ prepare_gateway_build () {
     rm pagekite.py
     ln -s /usr/lib/python3*/site-packages/pagekite/__main__.py /srv/gateway/pagekite.py 
     npm config set unsafe-perm true # Required for arm builds for some reason
-    export CXXFLAGS='-w' # Quiet the gcc warnings, there's nothing that we can do about them anyways
+    gcc -dumpspecs | sed -e '/cc1plus:$/a-w' -e '/cc1:$/a-w' | sed -e '/^-w/{N; s/\n/ /;}' > /usr/lib/gcc/$(gcc -dumpmachine)/$(gcc -dumpversion)/specs # Quiet the gcc warnings, there's nothing that we can do about them anyways
 }
 
 get_version () { # Gets the version of a package from 'package-lock.json'
