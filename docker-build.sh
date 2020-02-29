@@ -91,7 +91,6 @@ install_image_binaries () { # Install the image binaries using the versions from
 
 install_npm_packages () {
     cd /srv/gateway/
-    npm install -D imagemin-webpack-plugin # Build fails unless installed first
     npm install
     npm audit fix || true # NPM packages tend to have security vulnerabilities, so lets fix them
 }
@@ -118,7 +117,7 @@ cleanup_node () {
 cleanup () {
     rm -rf /var/cache/apk/* 
     find / -path '*/.git*' -delete  -o -name '*.md' -delete -o -name '*.js.map' -delete -o -name '*.h' -delete -o -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete  # Delete large, useless files
-    find / -exec file '{}' \; | awk -F: '/ELF/ {print $1}' | xargs strip --strip-unneeded # Strip all binaries.
+    find / -type f -executable -o -name '*.so*' | xargs file | awk -F: '/ELF/ {print $1}' | xargs strip --strip-unneeded || true # Strip all binaries.
     apk del --purge build-reqs || true
     ln -s /usr/bin/python3 /usr/bin/python
     rm -rf /var/tmp/* ~/* /tmp/*
