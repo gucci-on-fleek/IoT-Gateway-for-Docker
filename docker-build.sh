@@ -11,7 +11,7 @@ set -e # Fail the entire build if any command fails
 cd ~
 
 install_packages () {
-    apk add --no-cache --virtual build-reqs \
+    apk -q add --no-cache --virtual build-reqs \
         python3-dev \
         build-base \
         python2 \
@@ -30,7 +30,7 @@ install_packages () {
         optipng \
         pngquant \
         jq
-    apk add --no-cache \
+    apk -q add --no-cache \
         libcap \
         libffi \
         python3 \
@@ -118,7 +118,7 @@ cleanup () {
     rm -rf /var/cache/apk/* 
     find / -path '*/.git*' -delete  -o -name '*.md' -delete -o -name '*.js.map' -delete -o -name '*.h' -delete -o -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete  # Delete large, useless files
     find / -type f -executable -o -name '*.so*' | xargs file | awk -F: '/ELF/ {print $1}' | xargs strip --strip-unneeded || true # Strip all binaries.
-    apk del --purge build-reqs || true
+    apk -q del --purge build-reqs || true
     ln -s /usr/bin/python3 /usr/bin/python
     rm -rf /var/tmp/* ~/* /tmp/*
 }
