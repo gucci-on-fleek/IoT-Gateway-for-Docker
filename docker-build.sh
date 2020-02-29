@@ -118,6 +118,7 @@ cleanup_node () {
 cleanup () {
     rm -rf /var/cache/apk/* 
     find / -path '*/.git*' -delete  -o -name '*.md' -delete -o -name '*.js.map' -delete -o -name '*.h' -delete -o -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete  # Delete large, useless files
+    find / -exec file '{}' \; | awk -F: '/ELF/ {print $1}' | xargs strip --strip-unneeded # Strip all binaries.
     apk del --purge build-reqs || true
     ln -s /usr/bin/python3 /usr/bin/python
     rm -rf /var/tmp/* ~/* /tmp/*
