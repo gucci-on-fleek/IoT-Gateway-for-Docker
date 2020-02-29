@@ -117,11 +117,11 @@ cleanup_node () {
 cleanup () {
     rm -rf /var/cache/apk/* 
     find / -path '*/.git*' -delete  -o -name '*.md' -delete -o -name '*.js.map' -delete -o -name '*.h' -delete -o -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete  # Delete large, useless files
-    find / -type f -executable -o -name '*.so*' | xargs file | awk -F: '/ELF/ {print $1}' | xargs strip --strip-unneeded || true # Strip all binaries.
+    find /srv/ -type f -executable -o -name '*.so*' | xargs file | awk -F: '/ELF/ {print $1}' | xargs strip --strip-unneeded || true # Strip all binaries.
     apk -q del --purge build-reqs || true
     ln -s /usr/bin/python3 /usr/bin/python
     rm -rf /var/tmp/* ~/* /tmp/*
 }
 
-printf '   ╔═══════════════════════════════════╗\n   ║                                   ║\r   ║   Running %s \n   ╚═══════════════════════════════════╝\n' "$1"
+printf '   ╔═══════════════════════════════════╗ (%s)\n   ║                                   ║\r   ║   Running %s \n   ╚═══════════════════════════════════╝\n' "$1" "$(uname -m)"
 $1
