@@ -6,5 +6,5 @@ services:
     image: guccionfleek/iot-gateway
     restart: unless-stopped
     volumes:
-      - .:/home/gateway/.mozilla-iot
+      - .:/home/gateway/.webthings
     network_mode: "host"

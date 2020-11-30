@@ -38,7 +38,7 @@ install_packages () {
         tini \
         zlib
     python3 -m ensurepip
-    pip3 --no-cache-dir install git+https://github.com/mozilla-iot/gateway-addon-python#egg=gateway_addon # Python package to enable python addons
+    pip3 --no-cache-dir install git+https://github.com/WebThingsIO/gateway-addon-python#egg=gateway_addon # Python package to enable python addons
 }
 
 build_safe_chown () {
@@ -48,7 +48,7 @@ build_safe_chown () {
 }
 
 install_pagekite () {
-    git clone --depth 1 --recursive https://github.com/pagekite/PyPagekite.git
+    git clone --depth 1 --recursive https://github.com/gucci-on-fleek/PyPagekite.git
     git clone --depth 1 --recursive https://github.com/pagekite/PySocksipyChain 
     cp -R ~/PyPagekite/pagekite /usr/lib/python3*/site-packages/
     cp -R ~/PySocksipyChain/sockschain /usr/lib/python3*/site-packages/
@@ -56,7 +56,7 @@ install_pagekite () {
 
 prepare_gateway_build () {
     cd /srv/
-    git clone --depth 1 --recursive https://github.com/mozilla-iot/gateway.git
+    git clone --depth 1 --recursive https://github.com/WebThingsIO/gateway.git
     cd gateway
     sed -i 's/"segfault-handler":.*//' package.json # segfault-handler is incompatible with musl, therefore it cannot be used under Alpine Linux
     sed -i 's/.*SegfaultHandler.*//' src/app.js
@@ -101,7 +101,8 @@ build_gateway () {
 
 create_conf_dir () {
     useradd --create-home --user-group --shell /bin/sh --system --uid 4545 gateway # Create the gateway user
-    mkdir -p /home/gateway/.mozilla-iot && \
+    mkdir -p /home/gateway/.webthings && \
+    ln -s /home/gateway/.webthings /home/gateway/.mozilla-iot
     chown -R gateway:gateway /home/gateway/
 }
 

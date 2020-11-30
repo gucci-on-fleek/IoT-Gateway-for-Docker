@@ -6,7 +6,7 @@ services:
     image: guccionfleek/iot-gateway
     restart: unless-stopped
     volumes:
-      - .:/home/gateway/.mozilla-iot
+      - .:/home/gateway/.webthings
     ports:
       - "8080:8080"
       - "4443:4443"

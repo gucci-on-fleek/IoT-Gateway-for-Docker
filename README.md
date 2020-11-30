@@ -1,5 +1,5 @@
 # WebThings Gateway (for Docker)
-*Small, fast, easy to use, and secure. Docker image to run the [Mozilla WebThings Gateway](https://iot.mozilla.org/gateway/) on all platforms.*
+*Small, fast, easy to use, and secure. Docker image to run the [WebThingsIO Gateway](https://webthings.io/) on all platforms.*
 
 ## How to use
 ### Ubuntu/Debian (x86_64, armv7, arm64)
@@ -69,7 +69,7 @@ Because the container is immutable, it cannot be updated from within the gateway
     docker rmi $(docker images | awk '/guccionfleek\/iot-gateway\s+<none>\s+[A-z0-9].*$/{print $3}')
     ```
 
-## Advantages over the [official image](https://hub.docker.com/r/mozillaiot/gateway)
+## Advantages over the [official image](https://hub.docker.com/r/webthingsio/gateway)
 ### Small
 This image uses only 179 MB of disk space. It uses Alpine Linux as the base, and it installs the absolute minimum number of packages. The image clears out all of its temporary files and dev dependencies after being build to reduce its size to the bare minimum. The official image uses 1.54 GB, so this image is 80% smaller.
 

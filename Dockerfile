@@ -22,7 +22,7 @@ RUN \
 COPY ./start.sh /srv/gateway/start.sh
 USER gateway:gateway
 EXPOSE 8080/tcp 4443/tcp
-VOLUME /home/gateway/.mozilla-iot
+VOLUME /home/gateway/.webthings
 WORKDIR /srv/gateway
 ENTRYPOINT ["/sbin/tini"]
 CMD ["/bin/sh", "/srv/gateway/start.sh"]

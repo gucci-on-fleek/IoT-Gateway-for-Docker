@@ -4,8 +4,8 @@
  * specified at compile-time.
  */
 
-#define UID 4545                              // UID to assign ownership to
-#define FILENAME "/home/gateway/.mozilla-iot" // Directory to change ownership recursively
+#define UID 4545                            // UID to assign ownership to
+#define FILENAME "/home/gateway/.webthings" // Directory to change ownership recursively
 
 // All changes made below this point are AT YOUR OWN RISK!
 
