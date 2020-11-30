@@ -31,7 +31,7 @@ install_packages () {
         pngquant \
         jq
     apk -q add --no-cache \
-        nodejs \
+        npm \
         libcap \
         libffi \
         python3 \
@@ -45,8 +45,8 @@ install_packages () {
 build_safe_chown () {
     gcc -Wall safe-chown.c
     mv a.out /usr/local/bin/safe-chown
-    chmod a=rw /usr/local/bin/safe-chown
-    setcap CAP_CHOWN /usr/local/bin/safe-chown
+    chmod a=rx /usr/local/bin/safe-chown
+    setcap cap_chown+ep /usr/local/bin/safe-chown
 }
 
 install_pagekite () {
