@@ -1,4 +1,4 @@
-FROM node:12-alpine
+FROM alpine:latest
 
 LABEL url="https://github.com/gucci-on-fleek/IoT-Gateway-for-Docker"
 LABEL description="A Dockerfile for the Mozilla WebThings Gateway. See url."

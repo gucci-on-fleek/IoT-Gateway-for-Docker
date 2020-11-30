@@ -31,6 +31,7 @@ install_packages () {
         pngquant \
         jq
     apk -q add --no-cache \
+        nodejs \
         libcap \
         libffi \
         python3 \
