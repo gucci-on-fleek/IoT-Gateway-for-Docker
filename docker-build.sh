@@ -44,9 +44,9 @@ install_packages () {
 
 build_safe_chown () {
     gcc -Wall safe-chown.c
-    mv a.out /bin/safe-chown
-    chmod a=rw /bin/safe-chown
-    setcap CAP_CHOWN /bin/safe-chown
+    mv a.out /usr/local/bin/safe-chown
+    chmod a=rw /usr/local/bin/safe-chown
+    setcap CAP_CHOWN /usr/local/bin/safe-chown
 }
 
 install_pagekite () {
