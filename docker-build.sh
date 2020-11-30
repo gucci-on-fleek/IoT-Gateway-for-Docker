@@ -44,7 +44,8 @@ install_packages () {
 build_safe_chown () {
     gcc -Wall safe-chown.c
     mv a.out /bin/safe-chown
-    chmod u+s,a-w /bin/safe-chown # Add the 'suid' bit so non-root users can run
+    chmod a=rw /bin/safe-chown
+    setcap CAP_CHOWN /bin/safe-chown
 }
 
 install_pagekite () {
