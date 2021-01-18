@@ -1,6 +1,6 @@
 #!/bin/sh
 
-###########################################################
+############################################################
 #           WebThings Gateway (for Docker)                 #
 # https://github.com/gucci-on-fleek/IoT-Gateway-for-Docker #
 ############################################################
@@ -98,7 +98,7 @@ install_npm_packages () {
 
 build_gateway () {
     cd /srv/gateway/
-    ./node_modules/.bin/webpack --display errors-only
+    npm run build
 }
 
 create_conf_dir () {
