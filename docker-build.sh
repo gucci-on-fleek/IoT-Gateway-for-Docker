@@ -61,7 +61,7 @@ prepare_gateway_build () {
     git clone --depth 1 --recursive https://github.com/WebThingsIO/gateway.git
     cd gateway
     sed -i 's/"segfault-handler":.*//' package.json # segfault-handler is incompatible with musl, therefore it cannot be used under Alpine Linux
-    sed -i 's/.*SegfaultHandler.*//' src/app.js
+    sed -i 's/.*SegfaultHandler.*//' src/app.ts
     rm pagekite.py
     ln -s /usr/lib/python3*/site-packages/pagekite/__main__.py /srv/gateway/pagekite.py 
     npm config set unsafe-perm true # Required for arm builds for some reason
