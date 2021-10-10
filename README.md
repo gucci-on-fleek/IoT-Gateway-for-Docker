@@ -1,3 +1,4 @@
+**Note:** Automatic builds are currently disabled. The build is currently broken and my testing/staging server is offline. A PR to fix the build will be gladly accepted.
 # WebThings Gateway (for Docker)
 *Small, fast, easy to use, and secure. Docker image to run the [WebThingsIO Gateway](https://webthings.io/) on all platforms.*
 
